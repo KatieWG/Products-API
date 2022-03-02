@@ -1,0 +1,26 @@
+{
+  "name": "products-api",
+  "version": "1.0.0",
+  "description": "Products API for the client-side project, FEC-project-catwalk.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server-dev": "npx nodemon server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hack-Reactor-SDC-Team-Pesto/Products-API.git"
+  },
+  "author": "Katie Gross",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Hack-Reactor-SDC-Team-Pesto/Products-API/issues"
+  },
+  "homepage": "https://github.com/Hack-Reactor-SDC-Team-Pesto/Products-API#readme",
+  "dependencies": {
+    "axios": "^0.26.0",
+    "express": "^4.17.3",
+    "mongodb": "^4.4.0",
+    "mongoose": "^6.2.4"
+  }
+}
