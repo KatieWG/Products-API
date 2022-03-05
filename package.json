@@ -19,6 +19,9 @@
   "homepage": "https://github.com/Hack-Reactor-SDC-Team-Pesto/Products-API#readme",
   "dependencies": {
     "axios": "^0.26.0",
+    "csv": "^6.0.5",
+    "csv-parser": "^3.0.0",
+    "csv-writer": "^1.6.0",
     "express": "^4.17.3",
     "mongodb": "^4.4.0",
     "mongoose": "^6.2.4"
