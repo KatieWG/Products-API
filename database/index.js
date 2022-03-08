@@ -6,7 +6,8 @@ let productSchema = mongoose.Schema({
   description: String,
   category: String,
   default_price: Number,
-  features: Array //Features collection
+  features: Array,
+  skus:  //of objects in Features collection
 });
 
 let Product = mongoose.model('Product', productSchema); //THIS IS A MODEL, TEMPLATING WHAT OUR SCHEMAS WILL LOOK LIKE IN OUR COLLECTION
