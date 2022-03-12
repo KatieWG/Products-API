@@ -2,86 +2,42 @@ const express = require('express');
 const app = express();
 const axios = require('axios');
 const path = require('path');
+const url = require('url');
+const querystring = require('querystring');
 const port = process.env.PORT || 3000;
-
-// const csv = require("csv-parser");
-// const createCsvStringifier = require("csv-writer").createObjectCsvStringifier;
-// const fs = require('fs');
-// const Transform = require("stream").Transform;
 const mongoose = require('mongoose');
-const { Product } = require('../database/schemas.js')
+const { Product, UpdatedProduct } = require('../database/schemas.js')
 mongoose.connect('mongodb://localhost:27017/sdc')
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 //ROUTES
 
-
-
-//Retrieves the list of products.
-app.get("/products", (req, res) => { //WHY is this path running where the other is not???
-  const targetResult = [
-    {
-          "id": 1,
-          "name": "Camo Onesie",
-          "slogan": "Blend in to your crowd",
-          "description": "The So Fatigues will wake you up and fit you in. This high energy camo will have you blending in to even the wildest surroundings.",
-          "category": "Jackets",
-          "default_price": "140"
-      },
-  ]
-
-  // Product.find()
-  // .then(allProducts => {
-  //   console.log('🥳🥳🥳🥳🥳 here are your products --->', allProducts)
-  //   res.status(200).send(allProducts);
-  // })
-  // .catch(err => {
-  //   console.log('🤬🤬🤬🤬🤬 err getting products --->', err)
-  //   res.status(404).end;
-  // })
-
-  console.log('🔅🔅🔅🔅🔅 req.params------->', req.params) //WHY IS THIS ONE LOGGING
-
-  // DATA => need only the fields listed above
-  // QUERY => If this is the way, make a schema to filter the data (research this tomorrow)
-
+app.get("/products", (req, res) => {
+  UpdatedProduct.find({ id: { $lte: 1000 } }).select('-styles -features')
+  //not sure why its taking so long, I indexed the product id on each document - it took like 40 secs
+  .then(allProducts => {
+    console.log('🥳🥳🥳🥳🥳 here are your products --->', Object.keys(allProducts))
+    res.status(200).send(allProducts);
+  })
+  .catch(err => {
+    console.log('🤬🤬🤬🤬🤬 err getting products --->', err)
+    res.status(404).end;
+  })
 })
 
 
-
-//Returns all product level information for a specified product id.
 app.get("/products/:product_id", (req, res) => {
-  const targetResult = {
-    "id": 11,
-    "name": "Air Minis 250",
-    "slogan": "Full court support",
-    "description": "This optimized air cushion pocket reduces impact but keeps a perfect balance underfoot.",
-    "category": "Basketball Shoes",
-    "default_price": "0",
-    "features": [
-  	{
-            "feature": "Sole",
-            "value": "Rubber"
-        },
-  	{
-            "feature": "Material",
-            "value": "FullControlSkin"
-        },
-    ]
-  }
-
-  console.log('🟥🟥🟥🟥🟥req.params.product_id------->', req.params.product_id) //WHEN THIS ONE SHOULD BE
-  // Product.find()
-  // .then(allProducts => {
-  //   console.log('🥳🥳🥳🥳🥳 here are your products --->', allProducts)
-  //   res.status(200).send(allProducts);
-  // })
-  // .catch(err => {
-  //   console.log('🤬🤬🤬🤬🤬 err getting products --->', err)
-  //   res.status(404).end;
-  // })
-
-  // DATA => only change from previous call is the addition of the 'features' property = {features, value}
-  // QUERY => make a new schema and use here to retrieve data filtered by product id
+  UpdatedProduct.findOne({ id: Number(req.params.product_id) }).select('-styles -skus')
+    .then(product => {
+      console.log('🥳🥳🥳🥳🥳 here is your product --->', product)
+      res.status(200).send(product);
+    })
+    .catch(err => {
+      console.log('🤬🤬🤬🤬🤬 err getting products --->', err)
+      res.status(404).end;
+    })
 })
 
 
@@ -124,17 +80,19 @@ app.get("/products/:product_id/styles", (req, res) => {
     }
     ]
   }
-  .then(productStyles => {
-    productStyles.map(product => {
-      if (product.default_style) {
-      product.default_style = true;
-      //and change the field name to 'default?' --> look this up or do a helpdesk
 
-      //- change 'id' to 'style_id'
 
-      //- add 'photos' and 'skus' properties onto each style
-    } else {
-      product.default_style = true;
+  // .then(productStyles => {
+  //   productStyles.map(product => {
+  //     if (product.default_style) {
+  //     product.default_style = true;
+  //     //and change the field name to 'default?' --> look this up or do a helpdesk
+
+  //     //- change 'id' to 'style_id'
+
+  //     //- add 'photos' and 'skus' properties onto each style
+  //   } else {
+  //     product.default_style = true;
       //and change the field name to 'default?' --> look this up or do a helpdesk
 
       //- change 'id' to 'style_id'
