@@ -15,7 +15,6 @@ app.use(express.json());
 //ROUTES
 app.get("/products", (req, res) => {
   UpdatedProduct.find({ id: { $lte: 1000 } }).select('-styles -features')
-  //not sure why its taking so long, I indexed the product id on each document - it took like 40 secs
   .then(allProducts => {
     console.log('here are your products --->', Object.keys(allProducts))
     res.status(200).send(allProducts);
