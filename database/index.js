@@ -19,9 +19,8 @@ module.exports = {};
   // db.products.find({}) shows whats inside the collection
   // mongosh opens up mongo interface (similar to mysql)
 
-  // create and run a node.js application to read and systematically populate database
-  // mongo import and aggregation pipelines - not doing etl, but elt
-  // create indexes on the correct fields (without, the aggregation pipelines would take months to process)
-  // look into: how to keep track of an index in mongodb
-  // once you deploy your database, it will cost $
-  // spot instances - can go up to a t3 medium
+  // ETL OPTIONS
+  // 1. create and run a node.js application to read and systematically populate database
+  // 2. mongo import and aggregation pipelines - not ETL, but ELT
+  // >> create indexes on the correct fields (without, the aggregation pipelines would take months to process)
+  // >> spot instances - can go up to a t3 medium
